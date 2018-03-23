@@ -28,10 +28,10 @@
 		exit;
 	}
 
-	$bdd = $PDO->prepare('INSERT INTO appointment(id, user_key, title, content) VALUES ("", :user_key, :title, :content)');
+	$bdd = $PDO->prepare('INSERT INTO memo(id, user_key, title, content) VALUES ("", :user_key, :title, :content)');
 	$bdd->execute(array(
-		'user_key' => $key,
-		'status' => $appointment_date,
+		'user_key' => $user_key,
+		'title' => $title,
 		'content' => $content,
 		)
     );

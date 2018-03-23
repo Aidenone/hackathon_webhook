@@ -17,22 +17,25 @@
 		$array = manage_post($data);
 	}
 
-	if(isset($array['key']) && $array['key'] &&
-	   isset($array['appointment_date']) && $array['appointment_date'] &&
-	   isset($array['description']) && $array['description'] ) {
-		$key = $array['key'];
-		$appointment_date = $array['appointment_date'];
-		$description = $array['description'];
+	if(isset($array['idSenior']) && $array['idSenior'] &&
+	   isset($array['datepicker']) && $array['datepicker'] &&
+	   isset($array['nom']) && $array['nom'] &&
+	   isset($array['content']) && $array['content'] ) {
+		$key = $array['idSenior'];
+		$appointment_date = $array['datepicker'].":30";
+		$description = $array['content'];
+		$title = $array['nom'];
 	} else {
-		echo json_encode("Field missing");
+		echo json_encode($array);
 		exit;
 	}
 
-	$bdd = $PDO->prepare('INSERT INTO appointment(id, user_key, appointment_date, description) VALUES ("", :user_key, :appointment_date, :description)');
+	$bdd = $PDO->prepare('INSERT INTO appointement(id, user_key, appointment_date, title, description) VALUES ("", :user_key, :appointment_date, :title, :description)');
 	$bdd->execute(array(
 		'user_key' => $key,
 		'appointment_date' => $appointment_date,
 		'description' => $description,
+		'title' => $title,
 		)
     );
     echo json_encode("Success");

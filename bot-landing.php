@@ -10,24 +10,15 @@
 				//requête rdv du jour
 				$appointments = get_today_appointment($user_key);
 				if(sizeof($appointments)){
-					$text = "Vos rdv de la journée :";
+					$text = "Vos rdv de la journée : ";
 					foreach ($appointments as $event) {
-						$text .= "<br>".$event["description"]."<br> A ".substr($event["appointment_date"], -8);
-						$text .= "<br>";
+						$text .= $event["description"]." à ".substr($event["appointment_date"], -8).".";
 					}
 				} else {
 					$text = "Pas de rendez-vous aujourd'hui, reposez vous";
 				}
 				
-				if(sizeof($appointments)){
-					$speech = "Vos rdv de la journée :";
-					foreach ($appointments as $event) {
-						$speech .= "<br>".$event["description"]."<br> A ".substr($event["appointment_date"], -8);
-						$speech .= "<br>";
-					}
-				} else {
-					$speech = "Pas de rendez-vous aujourd'hui, reposez vous";
-				}
+				$speech = $text;
 
 				sendMessage(array(
 		            "source" => $update["result"]["source"],
@@ -40,26 +31,16 @@
 			case "BirthdayInfo":
 				$birthdays = get_today_birthdays($user_key);
 				if(sizeof($birthdays)){
-					$text = "Les anniversaire 🎂:";
+					$text = "Les anniversaire : ";
 					foreach ($birthdays as $event) {
 						$age = date("Y") - substr($event["birthdate"], 0, 4);
-						$text .= "<br>".$event["firstname"]." ".$event["lastname"]." fête ses ".$age." ans, pensez à lui souhaiter";
-						$text .= "<br>";
+						$text .= $event["firstname"]." ".$event["lastname"]." fête ses ".$age." ans, pensez à lui souhaiter.";
 					}
 				} else {
 					$text = "Pas d'anniversaire aujourd'hui";
 				}
 				
-				if(sizeof($birthdays)){
-					$speech = "Les anniversaire :";
-					foreach ($birthdays as $event) {
-						$age = date("Y") - substr($event["birthdate"], 0, 4);
-						$speech .= "<br>".$event["firstname"]." ".$event["lastname"]." fête ses ".$age." ans, pensez à lui souhaiter";
-						$speech .= "<br>";
-					}
-				} else {
-					$speech = "Pas d'anniversaire aujourd'hui";
-				}
+				$speech = $text;
 
 				sendMessage(array(
 		            "source" => $update["result"]["source"],
@@ -72,20 +53,18 @@
 			case "MemoryLoss":
 				$memos = get_memos($user_key);
 				if(sizeof($memos)){
-					$text = "Vos mémos 📝:<br>";
+					$text = "Vos 📝:";
 					foreach ($memos as $memo) {
-						$text .= "<br>".$memo["title"]."<br>".$memo["content"];
-						$text .= "<br>";
+						$text .= " ".$memo["title"]." ".$memo["content"].".";
 					}
 				} else {
 					$text = "Rien de particulier à se rappeler";
 				}
 				
 				if(sizeof($memos)){
-					$speech = "Vos mémos :<br>";
+					$speech = "Vos mémos:";
 					foreach ($memos as $memo) {
-						$speech .= "<br>".$memo["title"]."<br>".$memo["content"];
-						$speech .= "<br>";
+						$speech .= $memo["title"]." ".$memo["content"].".";
 					}
 				} else {
 					$speech = "Rien de particulier à se rappeler";
@@ -93,7 +72,7 @@
 
 				sendMessage(array(
 		            "source" => $update["result"]["source"],
-		            "speech" => $speech,
+		            "speech" => $text,
 		            "displayText" => $text,
 		            "contextOut" => array()
 		        ));
